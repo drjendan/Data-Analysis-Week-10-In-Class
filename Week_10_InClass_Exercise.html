@@ -12,11 +12,11 @@
     --code-bg: #1E1E2E; --code-txt: #A8E6CF;
     --warn: #FFF3CD; --warn-border: #C67C00;
     --success: #E8F8F5; --success-border: #16A085;
+    --explain-bg: #F5F0FF; --explain-border: #7C3AED;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', sans-serif; background: var(--offwhite); color: var(--dark); }
 
-  /* ─── Header ─── */
   header {
     background: var(--navy); color: white; padding: 28px 40px 20px;
     border-bottom: 4px solid var(--accent);
@@ -24,7 +24,6 @@
   header h1 { font-size: 1.9rem; margin-bottom: 6px; }
   header p { color: var(--ltblue); font-size: 1rem; }
 
-  /* ─── Navigation ─── */
   nav {
     background: var(--blue); display: flex; overflow-x: auto;
     gap: 4px; padding: 8px 16px; position: sticky; top: 0; z-index: 100;
@@ -38,16 +37,13 @@
     background: var(--accent); border-color: var(--accent); color: var(--navy); font-weight: 600;
   }
 
-  /* ─── Progress bar ─── */
   #progress-bar {
     height: 4px; background: linear-gradient(to right, var(--accent), var(--teal));
     transition: width .3s; width: 0%;
   }
 
-  /* ─── Layout ─── */
   main { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
 
-  /* ─── Section ─── */
   .section { display: none; animation: fadeIn .3s ease; }
   .section.active { display: block; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
@@ -69,10 +65,9 @@
     border-top: none; margin-bottom: 24px;
   }
 
-  /* ─── Code blocks ─── */
   .code-block {
-    background: var(--code-bg); border-radius: 8px; padding: 20px 22px;
-    position: relative; margin: 16px 0; overflow: hidden;
+    background: var(--code-bg); border-radius: 8px 8px 0 0; padding: 20px 22px;
+    position: relative; margin: 16px 0 0; overflow: hidden;
   }
   .code-label {
     position: absolute; top: 0; right: 0; background: var(--teal);
@@ -92,7 +87,41 @@
   .copy-btn:hover { background: var(--accent); color: var(--navy); }
   .copy-btn.copied { background: var(--success-border); }
 
-  /* ─── Expected output ─── */
+  /* ── Code Explanation Box ── */
+  .explain-box {
+    background: var(--explain-bg);
+    border: 1px solid #C4B5FD;
+    border-top: 3px solid var(--explain-border);
+    border-radius: 0 0 8px 8px;
+    padding: 14px 18px 16px;
+    margin: 0 0 16px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .explain-box .explain-title {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--explain-border); font-weight: 700;
+    font-size: 0.82rem; letter-spacing: .04em;
+    margin-bottom: 10px; text-transform: uppercase;
+  }
+  .explain-box table {
+    width: 100%; border-collapse: collapse; margin: 4px 0;
+    font-size: 0.88rem;
+  }
+  .explain-box th {
+    background: #EDE9FE; color: var(--explain-border);
+    padding: 6px 10px; text-align: left; font-size: 0.82rem;
+  }
+  .explain-box td { padding: 6px 10px; border-bottom: 1px solid #DDD6FE; }
+  .explain-box tr:last-child td { border-bottom: none; }
+  .explain-box code {
+    background: #EDE9FE; color: var(--explain-border);
+    padding: 1px 5px; border-radius: 3px; font-size: 0.85em;
+    font-family: 'Consolas', monospace;
+  }
+  .explain-box ul { padding-left: 18px; margin: 4px 0; }
+  .explain-box li { margin-bottom: 4px; }
+
   .output-block {
     background: #0f1117; border-left: 3px solid var(--accent);
     border-radius: 0 6px 6px 0; padding: 14px 18px; margin: 14px 0;
@@ -100,7 +129,6 @@
   .output-label { color: var(--accent); font-size: 0.78rem; font-weight: 600; margin-bottom: 6px; }
   .output-block pre { color: #e2e8f0; font-size: 0.85rem; }
 
-  /* ─── Info boxes ─── */
   .info-box {
     background: var(--ltblue); border-left: 4px solid var(--blue);
     border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 14px 0;
@@ -118,7 +146,6 @@
     font-size: 0.93rem; line-height: 1.6;
   }
 
-  /* ─── Tasks ─── */
   .task-list { list-style: none; padding: 0; }
   .task-list li {
     display: flex; gap: 12px; align-items: flex-start;
@@ -132,7 +159,6 @@
   }
   .task-list li p { font-size: 0.95rem; line-height: 1.5; }
 
-  /* ─── Navigation buttons ─── */
   .nav-btns {
     display: flex; justify-content: space-between; align-items: center;
     margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--ltblue);
@@ -169,9 +195,7 @@
 
 <main>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 0: Setup                                            -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 0 ════ -->
 <div class="section active" data-index="0">
   <div class="section-header">
     <span class="step-badge">SETUP</span>
@@ -179,13 +203,22 @@
     <p>Install packages and load the Air Passengers dataset we'll use throughout the exercise.</p>
   </div>
   <div class="section-body">
+
     <h3>📦 Install Required Libraries</h3>
-    <p>Run this cell first to ensure all packages are available. In Google Colab or Jupyter, run <code>!pip install ...</code> in the first cell.</p>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre># Install any missing libraries (run once)
-!pip install statsmodels pmdarima --quiet</pre>
+      <pre>!pip install statsmodels pmdarima --quiet</pre>
       <button class="copy-btn">📋 Copy Code</button>
+    </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>!pip install</code></td><td>The <code>!</code> prefix lets you run a shell command from inside a Jupyter cell. <code>pip install</code> downloads and installs Python packages.</td></tr>
+        <tr><td><code>statsmodels</code></td><td>The main library for statistical models: ARIMA, Holt-Winters, decomposition, and the ADF stationarity test all live here.</td></tr>
+        <tr><td><code>pmdarima</code></td><td>Adds <code>auto_arima()</code> — automatically searches for the best ARIMA parameters. Not used in this exercise but useful for your own work.</td></tr>
+        <tr><td><code>--quiet</code></td><td>Suppresses the verbose installation output so your notebook stays tidy.</td></tr>
+      </table>
     </div>
 
     <h3>📚 Import Libraries</h3>
@@ -210,15 +243,36 @@ plt.rcParams["figure.figsize"] = (12, 4)
 print("✅ All libraries imported successfully")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Import</th><th>What it provides</th></tr>
+        <tr><td><code>pandas as pd</code></td><td>DataFrames, time-indexed Series, date parsing, and rolling windows. The backbone of all time series work.</td></tr>
+        <tr><td><code>numpy as np</code></td><td>Numerical operations — arrays, <code>np.log()</code>, <code>np.sqrt()</code>, <code>np.arange()</code>.</td></tr>
+        <tr><td><code>matplotlib.pyplot</code></td><td>Core plotting library. All charts are drawn here.</td></tr>
+        <tr><td><code>matplotlib.dates</code></td><td>Formats datetime values nicely on chart axes (e.g., "2024" instead of "19723.5").</td></tr>
+        <tr><td><code>seaborn as sns</code></td><td>Higher-level plotting built on matplotlib. Makes boxplots and heatmaps beautiful with less code.</td></tr>
+        <tr><td><code>seasonal_decompose</code></td><td>Splits a time series into Trend + Seasonal + Residual components.</td></tr>
+        <tr><td><code>adfuller</code></td><td>Runs the Augmented Dickey-Fuller test to check whether a series is stationary.</td></tr>
+        <tr><td><code>plot_acf, plot_pacf</code></td><td>Draws autocorrelation and partial autocorrelation plots — used to choose ARIMA p and q parameters.</td></tr>
+        <tr><td><code>SimpleExpSmoothing</code></td><td>SES — smoothing with no trend or seasonality.</td></tr>
+        <tr><td><code>ExponentialSmoothing</code></td><td>Holt's Double (trend) and Holt-Winters Triple (trend + seasonality).</td></tr>
+        <tr><td><code>ARIMA</code></td><td>The classic AutoRegressive Integrated Moving Average model.</td></tr>
+        <tr><td><code>SARIMAX</code></td><td>Seasonal ARIMA — extends ARIMA with seasonal terms (P, D, Q)[s].</td></tr>
+        <tr><td><code>LinearRegression</code></td><td>Sklearn's OLS regression — used to fit the linear trend line.</td></tr>
+        <tr><td><code>mean_absolute_error</code> etc.</td><td>Sklearn's forecast accuracy metrics: MAE, RMSE, R².</td></tr>
+        <tr><td><code>plt.style.use(...)</code></td><td>Applies a clean white-grid style to all plots in this session.</td></tr>
+        <tr><td><code>plt.rcParams[...]</code></td><td>Sets the default figure size to 12×4 inches for all charts.</td></tr>
+      </table>
+    </div>
 
     <h3>📊 Load the Air Passengers Dataset</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre># Load the classic Air Passengers dataset (monthly data, 1949-1960)
-url = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/airline-passengers.csv"
+      <pre>url = "https://raw.githubusercontent.com/jbrownlee/Datasets/master/airline-passengers.csv"
 df = pd.read_csv(url, header=0, index_col=0, parse_dates=True)
 df.columns = ["Passengers"]
-df.index.freq = "MS"  # Monthly start frequency
+df.index.freq = "MS"
 
 print(f"Dataset shape: {df.shape}")
 print(f"Date range: {df.index.min()} → {df.index.max()}")
@@ -228,6 +282,21 @@ print(f"\nBasic Statistics:")
 print(df.describe())</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>pd.read_csv(url, ...)</code></td><td>Downloads the CSV file directly from GitHub — no need to save it locally.</td></tr>
+        <tr><td><code>header=0</code></td><td>Tells pandas the first row of the CSV contains column names.</td></tr>
+        <tr><td><code>index_col=0</code></td><td>Uses the first column (the date) as the row index rather than a regular column.</td></tr>
+        <tr><td><code>parse_dates=True</code></td><td><strong>Critical.</strong> Converts the date strings (e.g., "1949-01") into proper <code>datetime</code> objects. Without this, rolling windows, resampling, and date-based grouping will not work.</td></tr>
+        <tr><td><code>df.columns = ["Passengers"]</code></td><td>Renames the column to something descriptive. The original CSV column name is awkward.</td></tr>
+        <tr><td><code>df.index.freq = "MS"</code></td><td>Sets the frequency to "Month Start" — tells pandas the data is monthly. Some statsmodels functions require this to be set explicitly.</td></tr>
+        <tr><td><code>df.shape</code></td><td>Returns (rows, columns) — should be (144, 1): 12 years × 12 months.</td></tr>
+        <tr><td><code>df.describe()</code></td><td>Prints count, mean, std, min, max, and quartiles. Quick sanity check before any analysis.</td></tr>
+      </table>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT</div>
       <pre>Dataset shape: (144, 1)
@@ -239,10 +308,7 @@ Month
 1949-01-01         112
 1949-02-01         118
 1949-03-01         132
-1949-04-01         129
-1949-05-01         121
-1949-06-01         135
-
+...
 Basic Statistics:
        Passengers
 count   144.000000
@@ -260,9 +326,7 @@ max     622.000000</pre>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 1: Visualization                                    -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 1 ════ -->
 <div class="section" data-index="1">
   <div class="section-header">
     <span class="step-badge">DEMO 1</span>
@@ -270,6 +334,7 @@ max     622.000000</pre>
     <p>Create a line plot, seasonal boxplot, and heatmap to explore the data.</p>
   </div>
   <div class="section-body">
+
     <h3>📈 1A — Basic Line Plot</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
@@ -286,6 +351,18 @@ print(f"  • Clear UPWARD TREND: passengers grew from ~112K to ~622K")
 print(f"  • SEASONALITY: peaks every summer (July–August)")
 print(f"  • The amplitude of seasonal swings GROWS with the trend → multiplicative pattern")</pre>
       <button class="copy-btn">📋 Copy Code</button>
+    </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>plt.subplots(figsize=(13, 4.5))</code></td><td>Creates a figure and one axes object. <code>figsize</code> sets width × height in inches. Returns <code>fig</code> (the canvas) and <code>ax</code> (the plot area).</td></tr>
+        <tr><td><code>ax.plot(df.index, df["Passengers"])</code></td><td>Draws the line chart. <code>df.index</code> provides the datetime x-axis; <code>df["Passengers"]</code> is the y-axis.</td></tr>
+        <tr><td><code>ax.fill_between(..., alpha=0.1)</code></td><td>Shades the area under the line. <code>alpha=0.1</code> makes it 90% transparent — a subtle visual cue.</td></tr>
+        <tr><td><code>ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))</code></td><td>Formats x-axis tick labels to show only the year (e.g., "1952") instead of the full timestamp.</td></tr>
+        <tr><td><code>plt.tight_layout()</code></td><td>Automatically adjusts margins so labels and titles don't get clipped. Always call before <code>plt.show()</code>.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>What to look for:</strong> Can you see the upward trend? Do you notice that the summer peaks get taller each year? That "growing peak" pattern tells you this is a <strong>multiplicative</strong> seasonal series — the seasonal swings scale with the trend level.</p>
     </div>
 
     <h3>📅 1B — Seasonal Boxplot (by Month)</h3>
@@ -308,6 +385,19 @@ for m, v in zip(month_names, monthly_avg):
     print(f"  {m:4s}: {v:6.1f}")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>df.index.month</code></td><td>Extracts the month number (1–12) from each datetime index value and stores it as a new column. This lets us group by month for the boxplot.</td></tr>
+        <tr><td><code>df.index.year</code></td><td>Extracts the year (1949–1960). Stored so we can use it later in the heatmap pivot table.</td></tr>
+        <tr><td><code>sns.boxplot(x="Month", ...)</code></td><td>Draws one box per month, pooling all 12 years of data. Each box shows the median (line), interquartile range (box), and outliers (dots).</td></tr>
+        <tr><td><code>ax.set_xticklabels(month_names)</code></td><td>Replaces the numeric tick labels (1, 2, 3…) with readable month abbreviations.</td></tr>
+        <tr><td><code>df.groupby("Month")["Passengers"].mean()</code></td><td>Calculates the average passenger count for each month across all years — a clean numerical summary of the seasonal pattern.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>What to look for:</strong> July and August boxes should be much higher than January and February. The <em>spread</em> of each box also increases for summer months — because in later years the peaks are much larger, increasing the variance.</p>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT (monthly averages, approximate)</div>
       <pre>Monthly Averages:
@@ -328,6 +418,19 @@ ax.set_title("Heatmap: Passengers by Year and Month", fontsize=14, fontweight="b
 plt.tight_layout(); plt.show()</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>df.pivot_table(..., index="Year", columns="Month")</code></td><td>Reshapes the data into a grid: rows = years (1949–1960), columns = months (Jan–Dec). Each cell contains the passenger count for that year-month combination.</td></tr>
+        <tr><td><code>pivot.columns = month_names</code></td><td>Replaces numeric column headers (1–12) with readable month names.</td></tr>
+        <tr><td><code>sns.heatmap(..., cmap="YlOrRd")</code></td><td>Draws the heatmap. <code>cmap="YlOrRd"</code> uses a yellow-to-red colour scale: lighter = lower values, darker = higher.</td></tr>
+        <tr><td><code>annot=True</code></td><td>Prints the actual number inside each cell — very useful for reading exact values.</td></tr>
+        <tr><td><code>fmt=".0f"</code></td><td>Format string: display numbers as integers (no decimal places).</td></tr>
+        <tr><td><code>linewidths=0.5</code></td><td>Adds thin grid lines between cells so individual values are easier to read.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>What to look for:</strong> Rows get progressively darker top-to-bottom (trend). July/August columns are always the darkest in each row (seasonality). You can read both patterns simultaneously in one chart.</p>
+    </div>
 
     <div class="info-box">
       <strong>💡 Key Insight</strong>
@@ -342,9 +445,7 @@ plt.tight_layout(); plt.show()</pre>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 2: Stationarity                                    -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 2 ════ -->
 <div class="section" data-index="2">
   <div class="section-header">
     <span class="step-badge">DEMO 2</span>
@@ -352,6 +453,7 @@ plt.tight_layout(); plt.show()</pre>
     <p>Apply the Augmented Dickey-Fuller test before and after transformation.</p>
   </div>
   <div class="section-body">
+
     <h3>🔬 2A — ADF Test on Raw Data</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
@@ -368,10 +470,22 @@ plt.tight_layout(); plt.show()</pre>
     else:
         print("  ❌ NON-STATIONARY  (p ≥ 0.05 → Fail to Reject H₀)")
 
-# Test original series
 adf_test(df["Passengers"], "Original Passengers")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>adfuller(series.dropna())</code></td><td>Runs the ADF test. <code>.dropna()</code> removes any missing values first — the test will error if NaNs are present. Returns a tuple of results.</td></tr>
+        <tr><td><code>result[0]</code></td><td>The ADF test statistic. More negative = stronger evidence against a unit root (i.e., stronger evidence of stationarity).</td></tr>
+        <tr><td><code>result[1]</code></td><td>The p-value. <strong>This is the key number.</strong> Below 0.05 → stationary. Above 0.05 → non-stationary.</td></tr>
+        <tr><td><code>result[4]</code></td><td>A dictionary of critical values at the 1%, 5%, and 10% significance levels. Your ADF statistic must be more negative than the critical value to reject H₀.</td></tr>
+        <tr><td><code>if result[1] &lt; 0.05</code></td><td>Decision rule: we reject the null hypothesis (H₀: series has a unit root) when p &lt; 0.05, concluding the series IS stationary.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>H₀ reminder:</strong> The null hypothesis of the ADF test is that the series is <em>non-stationary</em> (has a unit root). A high p-value (like 0.99) means we cannot reject that — the series is almost certainly non-stationary and needs transformation.</p>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT</div>
       <pre>=============================================
@@ -386,48 +500,36 @@ adf_test(df["Passengers"], "Original Passengers")</pre>
     <h3>🔄 2B — Apply Transformations</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre># 1. Log transformation (stabilizes variance)
-df["Log_Pass"] = np.log(df["Passengers"])
-
-# 2. First-order differencing (removes trend)
-df["Diff1"] = df["Passengers"].diff()
-
-# 3. Log + first-order differencing (removes both)
+      <pre>df["Log_Pass"]  = np.log(df["Passengers"])
+df["Diff1"]     = df["Passengers"].diff()
 df["Log_Diff1"] = df["Log_Pass"].diff()
 
-# Run ADF on all transformations
 adf_test(df["Log_Pass"],   "Log(Passengers)")
 adf_test(df["Diff1"],      "First Difference")
 adf_test(df["Log_Diff1"],  "Log + First Difference")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Transformation</th><th>What it does and why</th></tr>
+        <tr><td><code>np.log(df["Passengers"])</code></td><td><strong>Log transformation.</strong> Compresses large values and stabilises the variance — the seasonal swings that grow over time become roughly constant after logging. Fixes heteroscedasticity (changing variance).</td></tr>
+        <tr><td><code>df["Passengers"].diff()</code></td><td><strong>First-order differencing.</strong> Subtracts each value from the one before it: Y(t) − Y(t−1). This removes a linear trend by focusing on the <em>change</em> rather than the level. The first row becomes NaN (no previous value to subtract).</td></tr>
+        <tr><td><code>df["Log_Pass"].diff()</code></td><td><strong>Log + differencing combined.</strong> First stabilises variance, then removes trend. This is the standard pre-processing step before fitting ARIMA on data with both growing variance and a trend.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>Why does this matter for ARIMA?</strong> ARIMA requires a stationary input. The <code>d</code> parameter in ARIMA(p,<strong>d</strong>,q) tells the model to apply first-order differencing automatically — so when you set d=1, ARIMA does the <code>.diff()</code> step internally.</p>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT</div>
-      <pre>=============================================
-  ADF Test — Log(Passengers)
-=============================================
-  ADF Statistic : -1.6824
-  p-value       : 0.4408
-  ❌ NON-STATIONARY
-
-=============================================
-  ADF Test — First Difference
-=============================================
-  ADF Statistic : -2.8290
-  p-value       : 0.0543
-  ❌ NON-STATIONARY  (borderline)
-
-=============================================
-  ADF Test — Log + First Difference
-=============================================
-  ADF Statistic : -2.9296
-  p-value       : 0.0421
-  ✅ STATIONARY  (p < 0.05 → Reject H₀)</pre>
+      <pre>ADF Test — Log(Passengers):       p-value = 0.4408  ❌ NON-STATIONARY
+ADF Test — First Difference:      p-value = 0.0543  ❌ NON-STATIONARY (borderline)
+ADF Test — Log + First Difference: p-value = 0.0421  ✅ STATIONARY</pre>
     </div>
 
     <div class="warn-box">
       <strong>⚠️ Note</strong>
-      <p>The raw data is <strong>not stationary</strong>. We need to apply <strong>log transformation + differencing</strong> before fitting ARIMA. For SARIMA, we'll also apply seasonal differencing. The <code>d=1</code> parameter in ARIMA handles first-order differencing automatically.</p>
+      <p>The raw data is <strong>not stationary</strong>. We need <strong>log transformation + differencing</strong> before fitting ARIMA. The <code>d=1</code> parameter in ARIMA handles the differencing automatically — you don't need to pre-transform the data manually when using statsmodels.</p>
     </div>
 
     <div class="nav-btns">
@@ -438,42 +540,48 @@ adf_test(df["Log_Diff1"],  "Log + First Difference")</pre>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 3: Moving Average                                   -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 3 ════ -->
 <div class="section" data-index="3">
   <div class="section-header">
     <span class="step-badge">DEMO 3</span>
     <h2>Moving Average Methods</h2>
-    <p>Compute and visualize Simple, Weighted, and Exponential Moving Averages.</p>
+    <p>Compute and visualize Simple, and Exponential Moving Averages.</p>
   </div>
   <div class="section-body">
+
     <h3>📊 3A — Compute Moving Averages</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre># Simple Moving Averages
-df["SMA_3"]  = df["Passengers"].rolling(window=3).mean()
-df["SMA_12"] = df["Passengers"].rolling(window=12).mean()
-
-# Exponential Weighted Moving Average
-df["EWMA_03"] = df["Passengers"].ewm(alpha=0.3, adjust=False).mean()  # low α = more smoothing
-df["EWMA_07"] = df["Passengers"].ewm(alpha=0.7, adjust=False).mean()  # high α = more reactive
+      <pre>df["SMA_3"]   = df["Passengers"].rolling(window=3).mean()
+df["SMA_12"]  = df["Passengers"].rolling(window=12).mean()
+df["EWMA_03"] = df["Passengers"].ewm(alpha=0.3, adjust=False).mean()
+df["EWMA_07"] = df["Passengers"].ewm(alpha=0.7, adjust=False).mean()
 
 print("Moving Average sample (first 15 rows):")
 print(df[["Passengers","SMA_3","SMA_12","EWMA_03"]].head(15).round(1))</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>.rolling(window=3).mean()</code></td><td>Slides a window of 3 periods along the series and takes the mean. Each output value is the average of the current and previous 2 observations. The first 2 rows are NaN (not enough history yet).</td></tr>
+        <tr><td><code>.rolling(window=12).mean()</code></td><td>12-period SMA. Averages an entire year of monthly data — this smooths out all seasonal variation and reveals the pure trend. First 11 rows are NaN.</td></tr>
+        <tr><td><code>.ewm(alpha=0.3, adjust=False).mean()</code></td><td><strong>Exponential Weighted Moving Average.</strong> Weights older observations exponentially less. Alpha=0.3 gives 30% weight to the current observation, 21% to the previous, 15% to the one before, and so on. Low alpha = more smoothing.</td></tr>
+        <tr><td><code>.ewm(alpha=0.7, ...)</code></td><td>Alpha=0.7 gives much more weight to recent data — the EWMA line hugs the original series more closely. High alpha = more reactive, less smoothing.</td></tr>
+        <tr><td><code>adjust=False</code></td><td>Uses the standard recursive EWMA formula. Setting <code>adjust=True</code> (the default) uses a slightly different weighted average formula — <code>False</code> is more consistent with how EWMA is defined in most textbooks.</td></tr>
+      </table>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT (first 5 rows)</div>
       <pre>            Passengers  SMA_3  SMA_12  EWMA_03
-Month
 1949-01-01         112    NaN     NaN    112.0
-1949-02-01         118  NaN       NaN    113.8
+1949-02-01         118    NaN     NaN    113.8
 1949-03-01         132  120.7     NaN    118.3
 1949-04-01         129  126.3     NaN    121.1
 1949-05-01         121  127.3     NaN    121.2
-...
-Note: SMA_12 will be NaN for the first 11 rows (window fills up at row 12)</pre>
+Note: SMA_12 will be NaN for the first 11 rows</pre>
     </div>
 
     <h3>📈 3B — Plot Moving Averages</h3>
@@ -481,15 +589,13 @@ Note: SMA_12 will be NaN for the first 11 rows (window fills up at row 12)</pre>
       <span class="code-label">PYTHON</span>
       <pre>fig, axes = plt.subplots(2, 1, figsize=(13, 8))
 
-# Top: SMA comparison
-axes[0].plot(df["Passengers"],  color="lightsteelblue", alpha=0.7, linewidth=1, label="Original")
+axes[0].plot(df["Passengers"], color="lightsteelblue", alpha=0.7, linewidth=1, label="Original")
 axes[0].plot(df["SMA_3"],  color="#065A82", linewidth=1.8, label="3-Month SMA")
 axes[0].plot(df["SMA_12"], color="#02C39A", linewidth=2.5, label="12-Month SMA")
 axes[0].set_title("Simple Moving Averages", fontweight="bold")
 axes[0].legend(); axes[0].grid(alpha=0.3)
 
-# Bottom: EWMA comparison
-axes[1].plot(df["Passengers"],  color="lightsteelblue", alpha=0.7, linewidth=1, label="Original")
+axes[1].plot(df["Passengers"], color="lightsteelblue", alpha=0.7, linewidth=1, label="Original")
 axes[1].plot(df["EWMA_03"], color="darkorange", linewidth=2, linestyle="--", label="EWMA α=0.3")
 axes[1].plot(df["EWMA_07"], color="darkred",    linewidth=2, linestyle="--", label="EWMA α=0.7")
 axes[1].set_title("Exponential Weighted Moving Average", fontweight="bold")
@@ -498,14 +604,23 @@ axes[1].legend(); axes[1].grid(alpha=0.3)
 plt.tight_layout(); plt.show()</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>plt.subplots(2, 1, figsize=(13, 8))</code></td><td>Creates a figure with 2 rows and 1 column of subplots, stacked vertically. Returns a figure and an array of 2 axes: <code>axes[0]</code> (top) and <code>axes[1]</code> (bottom).</td></tr>
+        <tr><td><code>alpha=0.7</code> on original</td><td>Makes the original data line semi-transparent so the overlaid moving average lines are visually prominent.</td></tr>
+        <tr><td><code>linewidth=2.5</code> on SMA_12</td><td>Thicker line to make the 12-month SMA stand out — it's the most important one for seeing the underlying trend.</td></tr>
+        <tr><td><code>linestyle="--"</code></td><td>Dashed line style for the EWMA lines — helps distinguish them from solid lines in black-and-white printing.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>What to observe:</strong> The green 12-month SMA line is very smooth — it has removed all seasonal variation and shows just the trend. The blue 3-month SMA still shows some seasonal waves but less than the raw data. The orange EWMA α=0.3 is close to the 3-month SMA. The dark red EWMA α=0.7 tracks the original data much more closely.</p>
+    </div>
 
     <h3>🔮 3C — MA as a Naive Forecast</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre># Use last 12-month SMA value as next period's forecast
-df["MA_Forecast"] = df["SMA_12"].shift(1)
+      <pre>df["MA_Forecast"] = df["SMA_12"].shift(1)
 
-# Evaluate only where we have both actual and forecast
 eval_df = df[["Passengers","MA_Forecast"]].dropna()
 mae_ma  = mean_absolute_error(eval_df["Passengers"], eval_df["MA_Forecast"])
 rmse_ma = np.sqrt(mean_squared_error(eval_df["Passengers"], eval_df["MA_Forecast"]))
@@ -517,6 +632,18 @@ print(f"  RMSE = {rmse_ma:.2f}")
 print(f"  MAPE = {mape_ma:.2f}%")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>df["SMA_12"].shift(1)</code></td><td><strong>The forecasting step.</strong> <code>.shift(1)</code> moves the entire SMA_12 column forward by one period — so the value computed in January becomes the forecast for February. This simulates using last month's average as the next-month prediction.</td></tr>
+        <tr><td><code>.dropna()</code></td><td>Removes rows where either the actual or forecast value is NaN. We lose the first 12 rows (SMA burn-in) plus one more from the shift.</td></tr>
+        <tr><td><code>mean_absolute_error(actual, predicted)</code></td><td>From sklearn. Computes the average of |actual − predicted|. Same units as the data (thousands of passengers).</td></tr>
+        <tr><td><code>np.sqrt(mean_squared_error(...))</code></td><td>RMSE: square each error, take the mean, then square-root back to original units. Penalises large errors more than MAE.</td></tr>
+        <tr><td><code>np.mean(np.abs((...) / actual)) * 100</code></td><td>MAPE formula: divide each absolute error by the actual value to get a percentage, then average. Multiply by 100 to express as a percentage.</td></tr>
+      </table>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT</div>
       <pre>Moving Average (12-month) Forecast Errors:
@@ -533,9 +660,7 @@ print(f"  MAPE = {mape_ma:.2f}%")</pre>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 4: Regression Trend                                -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 4 ════ -->
 <div class="section" data-index="4">
   <div class="section-header">
     <span class="step-badge">DEMO 4</span>
@@ -543,26 +668,40 @@ print(f"  MAPE = {mape_ma:.2f}%")</pre>
     <p>Fit a linear trend model, interpret the equation, and forecast ahead.</p>
   </div>
   <div class="section-body">
+
     <h3>📐 4A — Fit Linear Regression Trend</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre>df["t"] = np.arange(len(df))   # numeric time index: 0, 1, 2, ..., 143
+      <pre>df["t"] = np.arange(len(df))
 
 X_train = df[["t"]]
 y_train = df["Passengers"]
 
 model = LinearRegression().fit(X_train, y_train)
 
-a = model.intercept_          # y-intercept
-b = model.coef_[0]            # slope
+a  = model.intercept_
+b  = model.coef_[0]
 r2 = model.score(X_train, y_train)
 
 print(f"Trend Equation : Y = {a:.2f} + {b:.2f} · t")
-print(f"Slope (b)      : {b:.2f}  → passengers increase by {b:.1f}K per month on average")
+print(f"Slope (b)      : {b:.2f}  → passengers increase by {b:.1f}K per month")
 print(f"Intercept (a)  : {a:.2f}  → baseline in January 1949")
 print(f"R² Score       : {r2:.4f}  → trend explains {r2*100:.1f}% of the variance")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>np.arange(len(df))</code></td><td>Creates an integer sequence [0, 1, 2, …, 143] — one number per row. This is our time index <em>t</em>. We use integers instead of dates because regression works with numbers, not timestamps.</td></tr>
+        <tr><td><code>df[["t"]]</code> (double brackets)</td><td>Creates a DataFrame (2D) instead of a Series (1D). sklearn's <code>.fit()</code> requires a 2D feature matrix for X, even when there's only one feature.</td></tr>
+        <tr><td><code>LinearRegression().fit(X_train, y_train)</code></td><td>Fits the model Y = a + b·t using ordinary least squares — finds the values of a (intercept) and b (slope) that minimise the sum of squared errors.</td></tr>
+        <tr><td><code>model.intercept_</code></td><td>The y-intercept <em>a</em> — the predicted passenger count at t=0 (January 1949).</td></tr>
+        <tr><td><code>model.coef_[0]</code></td><td>The slope <em>b</em> — how many extra passengers per month on average. Note: <code>coef_</code> is always an array, so we index [0] to get the single value.</td></tr>
+        <tr><td><code>model.score(X_train, y_train)</code></td><td>Returns R² — the proportion of variance in Passengers explained by the linear time trend. R²=0.85 means 85% of all variation is captured by time progressing alone.</td></tr>
+      </table>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT</div>
       <pre>Trend Equation : Y = 87.62 + 2.67 · t
@@ -574,31 +713,37 @@ R² Score       : 0.8478  → trend explains 84.8% of the variance</pre>
     <h3>🔮 4B — Forecast Next 24 Months &amp; Plot</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre># Generate future time indices
-future_t = pd.DataFrame({"t": np.arange(len(df), len(df) + 24)})
+      <pre>future_t     = pd.DataFrame({"t": np.arange(len(df), len(df) + 24)})
 future_dates = pd.date_range(start="1961-01-01", periods=24, freq="MS")
 forecast_reg = model.predict(future_t)
 
 df["Trend_Line"] = model.predict(X_train)
 
 fig, ax = plt.subplots(figsize=(13, 5))
-ax.plot(df.index,    df["Passengers"], color="#065A82",   label="Actual Passengers", linewidth=1.5)
-ax.plot(df.index,    df["Trend_Line"], color="red",       label="Linear Trend",       linestyle="--", linewidth=2)
-ax.plot(future_dates, forecast_reg,    color="darkorange", label="Forecast (24 months)", linestyle="--", linewidth=2)
-ax.axvline(pd.Timestamp("1961-01-01"), color="gray", linestyle=":", alpha=0.7, label="Forecast Start")
+ax.plot(df.index,     df["Passengers"], color="#065A82",   label="Actual",           linewidth=1.5)
+ax.plot(df.index,     df["Trend_Line"], color="red",       label="Linear Trend",      linestyle="--", linewidth=2)
+ax.plot(future_dates, forecast_reg,     color="darkorange", label="Forecast (24 mo)", linestyle="--", linewidth=2)
+ax.axvline(pd.Timestamp("1961-01-01"), color="gray", linestyle=":", alpha=0.7)
 ax.set_title(f"Linear Trend: Y = {a:.1f} + {b:.2f}·t  |  R²={r2:.3f}", fontsize=13)
 ax.legend(); ax.grid(alpha=0.3)
-plt.tight_layout(); plt.show()
-
-print(f"\nForecast for 1961:")
-for d, f in zip(future_dates[:12], forecast_reg[:12]):
-    print(f"  {d.strftime('%b %Y')}: {f:.1f}K passengers")</pre>
+plt.tight_layout(); plt.show()</pre>
       <button class="copy-btn">📋 Copy Code</button>
+    </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>np.arange(len(df), len(df)+24)</code></td><td>Creates the future time indices [144, 145, …, 167] — these represent the 24 months after our dataset ends. We never observed these, but we can plug them into our trend equation.</td></tr>
+        <tr><td><code>pd.date_range(start="1961-01-01", periods=24, freq="MS")</code></td><td>Generates 24 monthly dates starting from January 1961. Used to label the x-axis of the forecast region correctly.</td></tr>
+        <tr><td><code>model.predict(future_t)</code></td><td>Applies the equation Y = 87.62 + 2.67·t to the future t values. This is the key advantage of regression over moving averages — you can extrapolate beyond the observed data.</td></tr>
+        <tr><td><code>ax.axvline(...)</code></td><td>Draws a vertical dashed line at the forecast start date — visually separates historical data from the projection.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>Limitation to notice:</strong> The orange forecast line is straight — it continues the trend upward but shows no seasonal pattern. A real July 1961 would be far above this line due to the summer peak. That's why we need Holt-Winters or SARIMA for operational forecasting.</p>
     </div>
 
     <div class="info-box">
       <strong>💡 Key Insight</strong>
-      <p>Linear regression captures the <strong>long-term trend</strong> (R²=0.85) but misses the seasonal peaks and valleys. For a complete forecast, we need to layer seasonality on top — which is what exponential smoothing and SARIMA do.</p>
+      <p>Linear regression captures the <strong>long-term trend</strong> (R²=0.85) but misses seasonal peaks and valleys. For a complete forecast, we need to layer seasonality on top — which is what Holt-Winters and SARIMA do.</p>
     </div>
 
     <div class="nav-btns">
@@ -609,9 +754,7 @@ for d, f in zip(future_dates[:12], forecast_reg[:12]):
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 5: Decomposition                                   -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 5 ════ -->
 <div class="section" data-index="5">
   <div class="section-header">
     <span class="step-badge">DEMO 5</span>
@@ -619,6 +762,7 @@ for d, f in zip(future_dates[:12], forecast_reg[:12]):
     <p>Separate the series into Trend, Seasonal, and Residual components.</p>
   </div>
   <div class="section-body">
+
     <h3>🔍 5A — Additive Decomposition</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
@@ -629,17 +773,27 @@ fig.set_size_inches(13, 8)
 fig.suptitle("Additive Decomposition (Y = T + S + R)", fontsize=14, fontweight="bold", y=1.01)
 plt.tight_layout(); plt.show()
 
-# Inspect residuals
 residuals_add = result_add.resid.dropna()
 print(f"Additive Residuals — Std Dev: {residuals_add.std():.2f}")
 print(f"Additive Residuals — Max Abs: {residuals_add.abs().max():.2f}")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>seasonal_decompose(..., model="additive")</code></td><td>Assumes the series = Trend + Seasonal + Residual. Estimates the trend using a moving average, then estimates seasonal factors by subtracting the trend, then the residual is what's left.</td></tr>
+        <tr><td><code>period=12</code></td><td>Tells the function the seasonal cycle length is 12 months (one year). Required for monthly data. Use period=4 for quarterly, period=7 for daily-with-weekly-seasonality.</td></tr>
+        <tr><td><code>result_add.plot()</code></td><td>Returns a matplotlib figure with 4 subplots: original, trend, seasonal, and residual — each on its own row.</td></tr>
+        <tr><td><code>result_add.resid</code></td><td>Accesses the residual component of the decomposition — what's left after trend and seasonality are removed. Should look like random noise if the model is a good fit.</td></tr>
+        <tr><td><code>residuals_add.std()</code></td><td>Standard deviation of the residuals — a smaller value means the decomposition explained more of the data variation.</td></tr>
+      </table>
+    </div>
 
     <h3>✖️ 5B — Multiplicative Decomposition</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre">result_mul = seasonal_decompose(df["Passengers"], model="multiplicative", period=12)
+      <pre>result_mul = seasonal_decompose(df["Passengers"], model="multiplicative", period=12)
 
 fig = result_mul.plot()
 fig.set_size_inches(13, 8)
@@ -648,7 +802,6 @@ plt.tight_layout(); plt.show()
 
 residuals_mul = result_mul.resid.dropna()
 print(f"Multiplicative Residuals — Std Dev: {residuals_mul.std():.4f}")
-print(f"Multiplicative Residuals — Max Abs: {residuals_mul.abs().max():.4f}")
 
 print("\n--- Comparison ---")
 print(f"Additive residual std:        {residuals_add.std():.2f}")
@@ -656,19 +809,26 @@ print(f"Multiplicative residual std:  {residuals_mul.std():.4f}")
 print("→ Smaller residuals = better fit for this dataset")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>model="multiplicative"</code></td><td>Assumes Y = Trend × Seasonal × Residual. The seasonal component is now a <em>ratio</em> (e.g., 1.3 means 30% above the trend level for that month) rather than an absolute difference. Better when seasonal swings scale with the level.</td></tr>
+        <tr><td><code>result_mul.resid.std()</code></td><td>The multiplicative residuals are ratios clustered around 1.0. A standard deviation of 0.035 means residuals typically deviate by ±3.5% from 1.0 — quite small, indicating a good fit.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>How to compare the two models:</strong> Look at the residual subplot. Additive residuals should be flat (constant variance) if the model fits well. If you see the residuals getting larger over time, that's evidence the multiplicative model is more appropriate. For Air Passengers, the multiplicative residuals are much flatter.</p>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT</div>
       <pre>Additive Residuals — Std Dev: 13.94
 Multiplicative Residuals — Std Dev: 0.0359
---- Comparison ---
-Additive residual std:        13.94
-Multiplicative residual std:  0.0359
-→ Multiplicative residuals are near 1.0 (ratio) — both show similar proportional spread</pre>
+→ Multiplicative model is more appropriate (growing seasonal amplitude)</pre>
     </div>
 
     <div class="info-box">
       <strong>💡 Choosing the Right Model</strong>
-      <p>Because seasonal variation <em>grows</em> as the trend increases (bigger peaks in later years), the <strong>multiplicative model</strong> is more appropriate for this dataset. Rule: constant swing → additive; growing swing → multiplicative.</p>
+      <p>Because seasonal variation <em>grows</em> as the trend increases, the <strong>multiplicative model</strong> fits better. Rule of thumb: if the seasonal peaks get taller as the series rises → multiplicative. If peaks stay roughly the same height → additive.</p>
     </div>
 
     <div class="nav-btns">
@@ -679,9 +839,7 @@ Multiplicative residual std:  0.0359
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 6: Exponential Smoothing                          -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 6 ════ -->
 <div class="section" data-index="6">
   <div class="section-header">
     <span class="step-badge">DEMO 6</span>
@@ -689,45 +847,73 @@ Multiplicative residual std:  0.0359
     <p>Compare SES, Holt's DES, and Holt-Winters Triple Exponential Smoothing.</p>
   </div>
   <div class="section-body">
+
     <h3>🔀 Train/Test Split</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre"># Keep last 24 months (2 years) as test set
-train = df["Passengers"][:-24]
+      <pre>train = df["Passengers"][:-24]
 test  = df["Passengers"][-24:]
 print(f"Training: {train.index.min().date()} → {train.index.max().date()} ({len(train)} months)")
 print(f"Testing:  {test.index.min().date()} → {test.index.max().date()} ({len(test)} months)")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>df["Passengers"][:-24]</code></td><td>Slice notation: all rows <em>except</em> the last 24. This gives us January 1949 to December 1957 — 120 months of training data.</td></tr>
+        <tr><td><code>df["Passengers"][-24:]</code></td><td>The last 24 rows only: January 1959 to December 1960. This is our hold-out test set — the model will <em>never see these values</em> during fitting.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>Why hold out test data?</strong> A model evaluated on its own training data always looks good — it was fit to that data. The test set simulates future unseen data, giving you an honest estimate of real-world forecast accuracy.</p>
+    </div>
 
     <h3>1️⃣ Simple Exponential Smoothing (SES)</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre>ses = SimpleExpSmoothing(train).fit(smoothing_level=0.3, optimized=False)
+      <pre>ses    = SimpleExpSmoothing(train).fit(smoothing_level=0.3, optimized=False)
 ses_fc = ses.forecast(24)
-ses_mae = mean_absolute_error(test, ses_fc)
-print(f"SES (α=0.3)  MAE = {ses_mae:.2f}")
-print(f"SES (α=0.3)  MAPE = {np.mean(np.abs((test.values - ses_fc.values)/test.values))*100:.2f}%")</pre>
+ses_mae  = mean_absolute_error(test, ses_fc)
+ses_mape = np.mean(np.abs((test.values - ses_fc.values)/test.values))*100
+print(f"SES (α=0.3)  MAE={ses_mae:.2f}  MAPE={ses_mape:.2f}%")</pre>
       <button class="copy-btn">📋 Copy Code</button>
+    </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>SimpleExpSmoothing(train)</code></td><td>Creates an SES model instance using only the training data. SES assumes the series is stationary — no trend, no seasonality.</td></tr>
+        <tr><td><code>.fit(smoothing_level=0.3, optimized=False)</code></td><td>Fits the model. <code>smoothing_level=0.3</code> manually sets alpha to 0.3. <code>optimized=False</code> prevents statsmodels from searching for a better alpha — we're fixing it for demonstration.</td></tr>
+        <tr><td><code>.forecast(24)</code></td><td>Produces 24 one-step-ahead forecasts beyond the training period. For SES with no trend, this produces a flat line equal to the last smoothed level.</td></tr>
+        <tr><td><code>test.values</code></td><td>Converts the pandas Series to a numpy array. Required because the MAPE formula involves element-wise division, which can behave unexpectedly with mismatched pandas indices.</td></tr>
+      </table>
     </div>
 
     <h3>2️⃣ Holt's Double Exponential Smoothing (DES)</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre>des = ExponentialSmoothing(train, trend="add").fit()
+      <pre>des    = ExponentialSmoothing(train, trend="add").fit()
 des_fc = des.forecast(24)
-des_mae = mean_absolute_error(test, des_fc)
-print(f"Holt's DES   MAE = {des_mae:.2f}")
-print(f"Holt's DES   MAPE = {np.mean(np.abs((test.values - des_fc.values)/test.values))*100:.2f}%")</pre>
+des_mae  = mean_absolute_error(test, des_fc)
+des_mape = np.mean(np.abs((test.values - des_fc.values)/test.values))*100
+print(f"Holt's DES  MAE={des_mae:.2f}  MAPE={des_mape:.2f}%")</pre>
       <button class="copy-btn">📋 Copy Code</button>
+    </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>ExponentialSmoothing(train, trend="add")</code></td><td>Holt's method. The <code>trend="add"</code> parameter adds a second smoothing equation that tracks the trend direction (slope). The forecast is then: Level + h × Trend.</td></tr>
+        <tr><td><code>.fit()</code> with no arguments</td><td>When called without arguments, statsmodels automatically optimises alpha and beta to minimise the sum of squared errors on the training data. You get the best-fit parameters without manual tuning.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>What to expect:</strong> Holt's DES will produce a straight-line upward forecast — it captures the linear trend but still has no seasonal component. The forecast for the summer peaks will be too low.</p>
     </div>
 
     <h3>3️⃣ Holt-Winters Triple Exponential Smoothing</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre">hw = ExponentialSmoothing(train, trend="add", seasonal="mul", seasonal_periods=12).fit()
+      <pre>hw    = ExponentialSmoothing(train, trend="add", seasonal="mul", seasonal_periods=12).fit()
 hw_fc = hw.forecast(24)
-hw_mae = mean_absolute_error(test, hw_fc)
+hw_mae  = mean_absolute_error(test, hw_fc)
 hw_mape = np.mean(np.abs((test.values - hw_fc.values)/test.values))*100
 
 print(f"Holt-Winters MAE  = {hw_mae:.2f}")
@@ -737,24 +923,36 @@ print(f"  α (level)    = {hw.params['smoothing_level']:.4f}")
 print(f"  β (trend)    = {hw.params['smoothing_trend']:.4f}")
 print(f"  γ (seasonal) = {hw.params['smoothing_seasonal']:.4f}")
 
-# Comparison plot
 fig, ax = plt.subplots(figsize=(13, 5))
-ax.plot(train.index, train,  color="lightsteelblue", alpha=0.7, label="Training")
-ax.plot(test.index,  test,   color="#065A82", linewidth=2, label="Actual Test")
+ax.plot(train.index, train, color="lightsteelblue", alpha=0.7, label="Training")
+ax.plot(test.index,  test,  color="#065A82", linewidth=2, label="Actual Test")
 ax.plot(test.index,  ses_fc, linestyle="--", label=f"SES  MAE={ses_mae:.0f}")
 ax.plot(test.index,  des_fc, linestyle="--", label=f"Holt's DES  MAE={des_mae:.0f}")
 ax.plot(test.index,  hw_fc,  color="red", linewidth=2.5, label=f"Holt-Winters  MAE={hw_mae:.0f}")
-ax.legend(); ax.set_title("Exponential Smoothing Models Comparison", fontsize=13)
+ax.legend(); ax.set_title("Exponential Smoothing Comparison", fontsize=13)
 ax.grid(alpha=0.3); plt.tight_layout(); plt.show()</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Parameter</th><th>What it does</th></tr>
+        <tr><td><code>trend="add"</code></td><td>Adds Holt's linear trend component. The model now tracks both the level (where the series is) and the trend (how fast it's growing).</td></tr>
+        <tr><td><code>seasonal="mul"</code></td><td>Adds multiplicative seasonal factors — appropriate because the Air Passengers series has seasonal swings that grow with the trend level. Use <code>seasonal="add"</code> when swings are constant.</td></tr>
+        <tr><td><code>seasonal_periods=12</code></td><td>Tells the model there are 12 seasonal indices (one per month). The model learns a separate scaling factor for each calendar month.</td></tr>
+        <tr><td><code>hw.params['smoothing_level']</code></td><td>The optimised alpha value. Typically around 0.58 — moderately responsive to recent level changes.</td></tr>
+        <tr><td><code>hw.params['smoothing_trend']</code></td><td>The optimised beta. Typically very low (~0.03) — the trend is stable and doesn't need to update quickly.</td></tr>
+        <tr><td><code>hw.params['smoothing_seasonal']</code></td><td>The optimised gamma. Near 0 — the seasonal pattern is very consistent year-over-year and barely needs updating.</td></tr>
+      </table>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT (approximate)</div>
-      <pre>SES (α=0.3)  MAE = 136.02   MAPE = 41.3%
-Holt's DES   MAE = 79.45    MAPE = 22.1%
-Holt-Winters MAE = 17.24    MAPE = 4.7%   ← Best!
+      <pre>SES (α=0.3)  MAE=136.02  MAPE=41.3%
+Holt's DES   MAE=79.45   MAPE=22.1%
+Holt-Winters MAE=17.24   MAPE=4.7%  ← Best!
 
-Smoothing parameters learned by model:
+Smoothing parameters:
   α (level)    = 0.5765
   β (trend)    = 0.0267
   γ (seasonal) = 0.0001</pre>
@@ -762,7 +960,7 @@ Smoothing parameters learned by model:
 
     <div class="success-box">
       <strong>✅ Key Result</strong>
-      <p>Holt-Winters achieves <strong>MAPE ≈ 4.7%</strong> — an excellent result. SES completely misses the seasonality (MAPE 41%). This demonstrates why model selection based on data characteristics is so important.</p>
+      <p>Holt-Winters achieves <strong>MAPE ≈ 4.7%</strong> — excellent. SES completely misses seasonality (MAPE 41%). This shows why model selection based on data characteristics is so important.</p>
     </div>
 
     <div class="nav-btns">
@@ -773,9 +971,7 @@ Smoothing parameters learned by model:
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 7: ACF/PACF                                       -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 7 ════ -->
 <div class="section" data-index="7">
   <div class="section-header">
     <span class="step-badge">DEMO 7</span>
@@ -783,44 +979,55 @@ Smoothing parameters learned by model:
     <p>Use autocorrelation plots to select p, d, q parameters for ARIMA.</p>
   </div>
   <div class="section-body">
+
     <h3>📊 7A — ACF and PACF on Differenced Data</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre"># Apply log transformation + differencing
-train_log = np.log(train)
+      <pre>train_log      = np.log(train)
 train_log_diff = train_log.diff().dropna()
 
 fig, axes = plt.subplots(3, 1, figsize=(13, 10))
 
-# Original
 axes[0].plot(train, color="#065A82")
 axes[0].set_title("Original Training Series", fontweight="bold")
 axes[0].grid(alpha=0.3)
 
-# ACF
-plot_acf(train_log_diff, lags=40, ax=axes[1], color="#1C7293")
+plot_acf(train_log_diff,  lags=40, ax=axes[1], color="#1C7293")
 axes[1].set_title("ACF — Log-Differenced Series", fontweight="bold")
 
-# PACF
 plot_pacf(train_log_diff, lags=40, ax=axes[2], color="#02C39A")
 axes[2].set_title("PACF — Log-Differenced Series", fontweight="bold")
 
 plt.tight_layout(); plt.show()
 
 print("\n📌 Interpretation Guide:")
-print("  ACF:  Significant spikes at lags 1,12 → seasonal MA terms (q,Q)")
-print("  PACF: Cuts off after lag 2 → AR(2), seasonal spike at lag 12 → SAR(1)")
-print("  Suggestion: ARIMA(2,1,1) or SARIMA(1,1,1)(1,1,1,12)")</pre>
+print("  ACF:  Significant spikes at lags 1,12 → seasonal MA terms")
+print("  PACF: Cuts off after lag 2 → AR(2), seasonal spike at lag 12")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>np.log(train)</code></td><td>Log-transforms the training data to stabilise variance. Done before differencing because the log makes the multiplicative seasonality additive.</td></tr>
+        <tr><td><code>train_log.diff().dropna()</code></td><td>First-order differencing — removes the trend. Combined with the log, this produces a series that should be stationary and suitable for ACF/PACF analysis.</td></tr>
+        <tr><td><code>plot_acf(..., lags=40)</code></td><td><strong>Autocorrelation Function plot.</strong> Each bar shows the correlation between the series and its lag-k version. The shaded region is the 95% confidence band — spikes outside this are statistically significant.</td></tr>
+        <tr><td><code>plot_pacf(..., lags=40)</code></td><td><strong>Partial Autocorrelation Function plot.</strong> Shows the direct correlation at each lag, controlling for all shorter lags. A spike at lag 2 in the PACF means lag 2 predicts the series even after accounting for lags 1.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>How to read these plots to choose ARIMA parameters:</strong><br>
+      • Count PACF spikes outside the shaded band → that's your <strong>p</strong> (AR order)<br>
+      • Count ACF spikes outside the shaded band → that's your <strong>q</strong> (MA order)<br>
+      • Spikes at lag 12 in both plots signal seasonal autocorrelation → you need <strong>SARIMA</strong>, not plain ARIMA</p>
+    </div>
 
-    <h3>📋 7B — ARIMA Order Interpretation</h3>
+    <h3>📋 7B — ARIMA Order Interpretation Guide</h3>
     <table>
-      <tr><th>Pattern</th><th>ACF Behavior</th><th>PACF Behavior</th><th>Suggested Model</th></tr>
-      <tr><td>Pure AR(p)</td><td>Decays gradually</td><td>Cuts off after lag p</td><td>ARIMA(p,0,0)</td></tr>
-      <tr><td>Pure MA(q)</td><td>Cuts off after lag q</td><td>Decays gradually</td><td>ARIMA(0,0,q)</td></tr>
-      <tr><td>ARMA(p,q)</td><td>Decays gradually</td><td>Decays gradually</td><td>ARIMA(p,0,q)</td></tr>
-      <tr><td>Non-stationary</td><td>Very slow decay</td><td>Large spike at lag 1</td><td>Apply differencing (d≥1)</td></tr>
+      <tr><th>Pattern</th><th>ACF Behaviour</th><th>PACF Behaviour</th><th>Suggested Model</th></tr>
+      <tr><td>Pure AR(p)</td><td>Decays gradually (tails off)</td><td>Cuts off sharply after lag p</td><td>ARIMA(p,d,0)</td></tr>
+      <tr><td>Pure MA(q)</td><td>Cuts off sharply after lag q</td><td>Decays gradually (tails off)</td><td>ARIMA(0,d,q)</td></tr>
+      <tr><td>ARMA(p,q)</td><td>Decays gradually</td><td>Decays gradually</td><td>ARIMA(p,d,q)</td></tr>
+      <tr><td>Non-stationary</td><td>Very slow decay toward zero</td><td>Very large spike at lag 1</td><td>Apply differencing (increase d)</td></tr>
+      <tr><td>Seasonal pattern</td><td>Significant spike at lag s (e.g. 12)</td><td>Significant spike at lag s</td><td>SARIMA with seasonal terms</td></tr>
     </table>
 
     <div class="nav-btns">
@@ -831,9 +1038,7 @@ print("  Suggestion: ARIMA(2,1,1) or SARIMA(1,1,1)(1,1,1,12)")</pre>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 8: ARIMA & SARIMA                                  -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 8 ════ -->
 <div class="section" data-index="8">
   <div class="section-header">
     <span class="step-badge">DEMO 8</span>
@@ -841,40 +1046,66 @@ print("  Suggestion: ARIMA(2,1,1) or SARIMA(1,1,1)(1,1,1,12)")</pre>
     <p>Fit both models, compare forecasts, and evaluate performance.</p>
   </div>
   <div class="section-body">
+
     <h3>🤖 8A — Fit ARIMA(2,1,1)</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre>arima_model = ARIMA(train, order=(2, 1, 1))
+      <pre>arima_model  = ARIMA(train, order=(2, 1, 1))
 arima_result = arima_model.fit()
 
 print(arima_result.summary())
 
-# Forecast
 arima_fc_obj = arima_result.get_forecast(steps=24)
-arima_fc   = arima_fc_obj.predicted_mean
-arima_conf = arima_fc_obj.conf_int()
+arima_fc     = arima_fc_obj.predicted_mean
+arima_conf   = arima_fc_obj.conf_int()
 
 arima_mae  = mean_absolute_error(test, arima_fc)
 arima_mape = np.mean(np.abs((test.values - arima_fc.values)/test.values))*100
 print(f"\nARIMA(2,1,1)  MAE={arima_mae:.2f}  MAPE={arima_mape:.2f}%")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>ARIMA(train, order=(2, 1, 1))</code></td><td>Creates an ARIMA model. The tuple (p=2, d=1, q=1) means: use 2 autoregressive lags, apply 1 round of differencing internally, and use 1 moving average error term.</td></tr>
+        <tr><td><code>order=(2, 1, 1)</code> — p=2</td><td><strong>AR order:</strong> The model uses Y(t-1) and Y(t-2) as predictors. Selected based on the PACF cutting off after lag 2.</td></tr>
+        <tr><td><code>order=(2, 1, 1)</code> — d=1</td><td><strong>Integration order:</strong> The model differences the series once internally — equivalent to the <code>.diff()</code> we did manually, but done automatically here.</td></tr>
+        <tr><td><code>order=(2, 1, 1)</code> — q=1</td><td><strong>MA order:</strong> The model also uses the previous forecast error ε(t-1) as a predictor. Selected from the ACF.</td></tr>
+        <tr><td><code>arima_result.summary()</code></td><td>Prints a detailed table of: coefficient estimates, standard errors, p-values, AIC, BIC, and residual diagnostics. Lower AIC/BIC = better model fit.</td></tr>
+        <tr><td><code>.get_forecast(steps=24)</code></td><td>Returns a forecast object (not just point estimates). Stores both the predicted values and the uncertainty information needed for confidence intervals.</td></tr>
+        <tr><td><code>.predicted_mean</code></td><td>Extracts the point forecast — the single best estimate for each future period.</td></tr>
+        <tr><td><code>.conf_int()</code></td><td>Returns a DataFrame with two columns: the lower and upper bounds of the 95% confidence interval. The interval widens for later forecast periods.</td></tr>
+      </table>
+    </div>
 
     <h3>🌊 8B — Fit SARIMA(1,1,1)(1,1,1,12)</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre">print("Fitting SARIMA — this may take 10–20 seconds...")
-sarima_model = SARIMAX(train, order=(1,1,1), seasonal_order=(1,1,1,12))
+      <pre>print("Fitting SARIMA — this may take 10–20 seconds...")
+sarima_model  = SARIMAX(train, order=(1,1,1), seasonal_order=(1,1,1,12))
 sarima_result = sarima_model.fit(disp=False)
 
 sarima_fc_obj = sarima_result.get_forecast(steps=24)
-sarima_fc   = sarima_fc_obj.predicted_mean
-sarima_conf = sarima_fc_obj.conf_int()
+sarima_fc     = sarima_fc_obj.predicted_mean
+sarima_conf   = sarima_fc_obj.conf_int()
 
 sarima_mae  = mean_absolute_error(test, sarima_fc)
 sarima_mape = np.mean(np.abs((test.values - sarima_fc.values)/test.values))*100
 print(f"SARIMA(1,1,1)(1,1,1,12)  MAE={sarima_mae:.2f}  MAPE={sarima_mape:.2f}%")</pre>
       <button class="copy-btn">📋 Copy Code</button>
+    </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Parameter</th><th>What it does</th></tr>
+        <tr><td><code>order=(1,1,1)</code></td><td>The non-seasonal ARIMA part — same meaning as before: p=1 AR lag, d=1 differencing, q=1 MA term.</td></tr>
+        <tr><td><code>seasonal_order=(1,1,1,12)</code></td><td>The seasonal component: P=1 seasonal AR lag (at lag 12), D=1 seasonal differencing (subtracts Y(t-12) from Y(t)), Q=1 seasonal MA term, s=12 seasonal period.</td></tr>
+        <tr><td><code>seasonal_order D=1</code></td><td><strong>Seasonal differencing.</strong> Computes Y(t) − Y(t-12) — subtracts the value from exactly one year ago. This removes the seasonal non-stationarity while preserving the within-year pattern.</td></tr>
+        <tr><td><code>seasonal_order s=12</code></td><td>Tells the model the seasonal cycle repeats every 12 steps. This is the most important parameter to get right — it encodes your domain knowledge about the annual business cycle.</td></tr>
+        <tr><td><code>fit(disp=False)</code></td><td>Suppresses the iterative optimisation output (dozens of lines of numbers) so your notebook stays readable.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>Why SARIMA beats ARIMA here:</strong> ARIMA(2,1,1) removes the trend through differencing but has no mechanism to model the annual seasonal pattern. SARIMA adds seasonal AR and MA terms that explicitly capture correlations at the 12-month lag — meaning January 1959 is informed by January 1958, February by February, etc.</p>
     </div>
 
     <h3>📊 8C — Side-by-Side Forecast Plot</h3>
@@ -883,12 +1114,12 @@ print(f"SARIMA(1,1,1)(1,1,1,12)  MAE={sarima_mae:.2f}  MAPE={sarima_mape:.2f}%")
       <pre>fig, axes = plt.subplots(2, 1, figsize=(13, 9))
 
 for ax, fc, conf, title, color in [
-    (axes[0], arima_fc,  arima_conf,  f"ARIMA(2,1,1)  MAE={arima_mae:.1f}  MAPE={arima_mape:.1f}%",  "#C0392B"),
+    (axes[0], arima_fc,  arima_conf,  f"ARIMA(2,1,1)  MAE={arima_mae:.1f}  MAPE={arima_mape:.1f}%", "#C0392B"),
     (axes[1], sarima_fc, sarima_conf, f"SARIMA(1,1,1)(1,1,1,12)  MAE={sarima_mae:.1f}  MAPE={sarima_mape:.1f}%", "#065A82"),
 ]:
     ax.plot(train.index, train, color="lightsteelblue", alpha=0.6, label="Training")
-    ax.plot(test.index,  test,  color="black", linewidth=2, label="Actual")
-    ax.plot(test.index,  fc,    color=color, linewidth=2.5, label="Forecast")
+    ax.plot(test.index,  test,  color="black",  linewidth=2,   label="Actual")
+    ax.plot(test.index,  fc,    color=color,    linewidth=2.5, label="Forecast")
     ax.fill_between(test.index, conf.iloc[:,0], conf.iloc[:,1], alpha=0.15, color=color, label="95% CI")
     ax.axvline(test.index[0], color="gray", linestyle=":", alpha=0.7)
     ax.set_title(title, fontsize=12, fontweight="bold")
@@ -897,10 +1128,21 @@ for ax, fc, conf, title, color in [
 plt.tight_layout(); plt.show()</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>for ax, fc, conf, title, color in [...]</code></td><td>Loops over both models simultaneously, applying the same plotting code to each. This is more concise than copy-pasting the same 8 lines twice.</td></tr>
+        <tr><td><code>ax.fill_between(test.index, conf.iloc[:,0], conf.iloc[:,1])</code></td><td>Draws the confidence interval band. <code>conf.iloc[:,0]</code> is the lower bound column, <code>conf.iloc[:,1]</code> is the upper bound. <code>alpha=0.15</code> makes the shading semi-transparent.</td></tr>
+        <tr><td><code>ax.axvline(test.index[0])</code></td><td>Draws a vertical line at the first test date — visually separates the historical training period from the forecast region.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>What to compare visually:</strong> The ARIMA forecast line should be fairly flat and miss the summer peaks. The SARIMA forecast line should closely follow the actual seasonal pattern, with the summer 1959 and 1960 peaks clearly visible in the forecast.</p>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT (approximate)</div>
       <pre>ARIMA(2,1,1)              MAE=89.4   MAPE=25.3%
-SARIMA(1,1,1)(1,1,1,12)  MAE=14.1   MAPE=3.9%  ← Much better with seasonality!</pre>
+SARIMA(1,1,1)(1,1,1,12)  MAE=14.1   MAPE=3.9%  ← Much better with seasonal terms!</pre>
     </div>
 
     <div class="nav-btns">
@@ -911,9 +1153,7 @@ SARIMA(1,1,1)(1,1,1,12)  MAE=14.1   MAPE=3.9%  ← Much better with seasonality!
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════════════════════ -->
-<!-- SECTION 9: Final Evaluation                               -->
-<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════ SECTION 9 ════ -->
 <div class="section" data-index="9">
   <div class="section-header">
     <span class="step-badge">DEMO 9 — FINALE</span>
@@ -921,6 +1161,7 @@ SARIMA(1,1,1)(1,1,1,12)  MAE=14.1   MAPE=3.9%  ← Much better with seasonality!
     <p>Compare ALL models side-by-side on MAE, RMSE, MAPE, and R².</p>
   </div>
   <div class="section-body">
+
     <h3>📏 Complete Evaluation Function</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
@@ -947,6 +1188,19 @@ print("\n📊 Model Comparison (sorted by MAPE):")
 print(results_df.to_string())</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Metric</th><th>Formula</th><th>What it tells you</th></tr>
+        <tr><td><code>MAE</code></td><td>mean(|actual − predicted|)</td><td>Average absolute error in the original units (thousands of passengers). Easy to interpret — "we were off by X on average."</td></tr>
+        <tr><td><code>RMSE</code></td><td>√mean((actual − predicted)²)</td><td>Like MAE but penalises large errors more because of the squaring. Useful when big misses are especially costly.</td></tr>
+        <tr><td><code>MAPE</code></td><td>mean(|actual − predicted| / actual) × 100</td><td>Percentage error — scale-independent. Benchmark: below 10% = excellent, 10–20% = acceptable, above 20% = needs work.</td></tr>
+        <tr><td><code>R²</code></td><td>1 − SS_residual / SS_total</td><td>Proportion of variance explained. 1.0 = perfect, 0.0 = no better than predicting the mean, negative = worse than the mean.</td></tr>
+        <tr><td><code>results_df["MAPE(%)"].rank()</code></td><td>Ranks models 1 (best) to 5 (worst) by MAPE.</td><td>Provides a quick ordinal comparison at a glance.</td></tr>
+        <tr><td><code>.sort_values("MAPE(%)")</code></td><td>Sorts the table by MAPE ascending.</td><td>Makes the winner obvious — it appears at the top of the table.</td></tr>
+      </table>
+    </div>
+
     <div class="output-block">
       <div class="output-label">📤 EXPECTED OUTPUT (approximate values)</div>
       <pre>📊 Model Comparison (sorted by MAPE):
@@ -954,18 +1208,18 @@ print(results_df.to_string())</pre>
 Model
 SARIMA(1,1,1)(1,1,1,12)  14.10   17.35     3.90  0.9921     1
 Holt-Winters             17.24   21.48     4.70  0.9882     2
-ARIMA(2,1,1)             89.40  106.22    25.30  0.3018     3
-Holt's DES               79.45   95.17    22.10  0.4245     4
+ARIMA(2,1,1)             89.40  106.22    25.30  0.3018     4
+Holt's DES               79.45   95.17    22.10  0.4245     3
 SES (α=0.3)             136.02  157.73    41.30 -0.5741     5</pre>
     </div>
 
     <h3>🏆 Final Visual Comparison</h3>
     <div class="code-block">
       <span class="code-label">PYTHON</span>
-      <pre">fig, ax = plt.subplots(figsize=(13, 6))
-ax.plot(df.index, df["Passengers"], color="black", linewidth=1.5, alpha=0.6, label="Actual")
-ax.plot(test.index, hw_fc,     color="#E67E22", linewidth=2, linestyle="--", label="Holt-Winters")
-ax.plot(test.index, sarima_fc, color="#065A82", linewidth=2.5, label="SARIMA (Best)")
+      <pre>fig, ax = plt.subplots(figsize=(13, 6))
+ax.plot(df.index,    df["Passengers"], color="black",   linewidth=1.5, alpha=0.6, label="Actual")
+ax.plot(test.index,  hw_fc,            color="#E67E22", linewidth=2,   linestyle="--", label="Holt-Winters")
+ax.plot(test.index,  sarima_fc,        color="#065A82", linewidth=2.5, label="SARIMA (Best)")
 ax.axvline(test.index[0], color="gray", linestyle=":", linewidth=1.5)
 ax.text(test.index[0], df["Passengers"].max()*0.95, " ← Forecast Start", color="gray", fontsize=10)
 ax.set_title("Best Models vs. Actual — Air Passengers 1949–1960", fontsize=13, fontweight="bold")
@@ -977,18 +1231,27 @@ print("   Captures BOTH the trend AND the seasonal pattern")
 print("   MAPE ≈ 3.9% — excellent forecast accuracy!")</pre>
       <button class="copy-btn">📋 Copy Code</button>
     </div>
+    <div class="explain-box">
+      <div class="explain-title">🔍 Code Explanation</div>
+      <table>
+        <tr><th>Line</th><th>What it does</th></tr>
+        <tr><td><code>ax.plot(df.index, df["Passengers"], alpha=0.6)</code></td><td>Plots the full 12-year actual series (training + test together) at 60% opacity as context. This lets you see how well the models fit in the test period relative to the full history.</td></tr>
+        <tr><td><code>ax.text(test.index[0], ..., " ← Forecast Start")</code></td><td>Adds a text annotation at the forecast start point. <code>df["Passengers"].max()*0.95</code> positions the text near the top of the chart so it doesn't overlap with the data lines.</td></tr>
+      </table>
+      <p style="margin-top:10px; color:#5B21B6;"><strong>Final takeaway:</strong> Both Holt-Winters and SARIMA perform excellently — MAPE under 5%. The key lesson from this exercise is the progression: SES (flat, no trend/seasonality) → Holt's DES (adds trend) → Holt-Winters (adds seasonality) → SARIMA (adds statistical seasonal autocorrelation structure). Each step adds a capability and reduces error substantially.</p>
+    </div>
 
     <div class="success-box">
       <strong>🎓 Summary: What We Demonstrated</strong>
       <ul>
         <li>✅ <strong>Visualization:</strong> Line plots, boxplots, heatmaps revealed trend &amp; seasonality</li>
-        <li>✅ <strong>Stationarity:</strong> ADF test confirmed non-stationarity; log+diff fixed it</li>
-        <li>✅ <strong>Moving Average:</strong> 12-month SMA smoothed noise (MAPE ≈ 9%)</li>
-        <li>✅ <strong>Regression:</strong> Linear trend explained 84.8% of variance (R²=0.85)</li>
-        <li>✅ <strong>Decomposition:</strong> Multiplicative model better fit for this data</li>
-        <li>✅ <strong>Holt-Winters:</strong> Excellent with trend+seasonality (MAPE ≈ 4.7%)</li>
-        <li>✅ <strong>SARIMA:</strong> Best overall performance (MAPE ≈ 3.9%)</li>
-        <li>✅ <strong>Evaluation:</strong> Always use hold-out test set with MAE, RMSE, MAPE, R²</li>
+        <li>✅ <strong>Stationarity:</strong> ADF test confirmed non-stationarity; log+diff fixed it (p=0.042)</li>
+        <li>✅ <strong>Moving Average:</strong> 12-month SMA revealed the trend; naive forecast MAPE ≈ 9%</li>
+        <li>✅ <strong>Regression:</strong> Linear trend explains 84.8% of variance (R²=0.85)</li>
+        <li>✅ <strong>Decomposition:</strong> Multiplicative model better fit — seasonal swings grow with trend</li>
+        <li>✅ <strong>Holt-Winters:</strong> Handles trend + multiplicative seasonality — MAPE ≈ 4.7%</li>
+        <li>✅ <strong>SARIMA:</strong> Best overall — explicitly models seasonal autocorrelation — MAPE ≈ 3.9%</li>
+        <li>✅ <strong>Evaluation:</strong> Always use hold-out test set with MAE, RMSE, MAPE, and R²</li>
       </ul>
     </div>
 
@@ -1003,9 +1266,9 @@ print("   MAPE ≈ 3.9% — excellent forecast accuracy!")</pre>
 </main>
 
 <script>
-const sections = document.querySelectorAll(".section");
+const sections     = document.querySelectorAll(".section");
 const navContainer = document.getElementById("nav-tabs");
-const progressBar = document.getElementById("progress-bar");
+const progressBar  = document.getElementById("progress-bar");
 
 const labels = [
   "⚙️ Setup", "📈 Visualization", "📉 Stationarity",
@@ -1031,7 +1294,6 @@ function goTo(index) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// Copy buttons
 document.querySelectorAll(".copy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const pre = btn.previousElementSibling;
